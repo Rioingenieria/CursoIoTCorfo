@@ -2,13 +2,15 @@ codigo = input('Ingrese hora cifrada: ')
 divide=codigo.find(":")
 
 suma = 0
-for c in range(divide):
-    suma += int(c)
+i=0
+for i in range(divide):
+    suma += int(codigo[i])
 hora = suma % 24
 
 suma = 0
-for c in range(divide,len(codigo)):
-    suma += int(c)
-minutos = suma % 24
+c=0
+for i in range(divide+1,len(codigo)):
+    suma += int(codigo[i])
+minutos = suma % 60
 
 print(hora,":",minutos)

@@ -8,7 +8,7 @@ for i in range(divide):
 hora = suma % 24
 
 suma = 0
-c=0
+i=0
 for i in range(divide+1,len(codigo)):
     suma += int(codigo[i])
 minutos = suma % 60

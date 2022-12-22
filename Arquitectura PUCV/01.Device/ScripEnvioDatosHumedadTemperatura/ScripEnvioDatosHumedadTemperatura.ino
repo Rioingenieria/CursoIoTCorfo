@@ -4,8 +4,10 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
+#include <Wire.h>
 
 #define LED             D4
+#define HUMEDAD         A0 
 #define ONE_WIRE_PIN    D6
 #define MSG_BUFFER_SIZE 250
 
@@ -21,6 +23,8 @@ const char* mqtt_server = "test.mosquitto.org";
 const int mqtt_port = 1883;
 const char* mqtt_topic = "pucv/iot/m6/p3/g40";
 const char* device_id = "id154";
+int lectura_humedad;
+int humedad;
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -98,7 +102,8 @@ void setup() {
   
   // inicializar el generador de números aleatorios
   randomSeed(micros());
-  
+  //inicializar sensor de humedad
+  Wire.begin();
   client.setServer(mqtt_server, mqtt_port);
 }
 
@@ -119,11 +124,15 @@ void loop() {
   if (now - lastMsg > 15000) {
     lastMsg = now;
     ++counter;
-    
+    //armamos json de humedad
+    lectura_humedad = analogRead(HUMEDAD);
+    humedad = map(lectura_humedad, 0, 1023, 100, 0);
+    //Armamos json de temperatua
     DynamicJsonDocument doc(1024);
     doc["device_id"] = device_id;
     doc["counter"]   = counter;
     doc["temperature"] = temperature;
+    doc["humidity"] = humedad;
     doc["version"] = "1.0beta";
     
     char msg[MSG_BUFFER_SIZE];

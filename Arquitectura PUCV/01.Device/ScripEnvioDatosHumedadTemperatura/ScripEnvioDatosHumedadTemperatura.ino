@@ -17,12 +17,12 @@ OneWire oneWire( D7 );
 DallasTemperature sensor( &oneWire );
 
 // Actualizar parámetros
-const char* ssid = "Rio Ingenieria";
-const char* password = "Rio20199!";
+const char* ssid = "NombreRedWifi";
+const char* password = "ContraseñaRedWifi";
 const char* mqtt_server = "test.mosquitto.org";
 const int mqtt_port = 1883;
-const char* mqtt_topic = "pucv/iot/m6/p3/g40";
-const char* device_id = "id154";
+const char* mqtt_topic = "pucv/iot/m6/p3/g2";
+const char* device_id = "wemosNombreIntegranteGrupo";
 int lectura_humedad;
 int humedad;
 
@@ -130,11 +130,8 @@ void loop() {
     //Armamos json de temperatua
     DynamicJsonDocument doc(1024);
     doc["device_id"] = device_id;
-    doc["counter"]   = counter;
     doc["temperature"] = temperature;
-    doc["humidity"] = humedad;
-    doc["version"] = "1.0beta";
-    
+    doc["humidity"] = humedad;    
     char msg[MSG_BUFFER_SIZE];
     serializeJson(doc, msg);
     Serial.print("Publish message: ");
